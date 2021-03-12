@@ -14,7 +14,7 @@ const realm = new Realm({ schema: [TodoSchema], schemaVersion: 2 });
 
 const addTodo = (todo) => {
     try {
-        todo._id = Math.floor(Math.random() * 100000);
+        todo._id = Math.floor(Math.random() * 100000).toString();
         realm.write(() => {
             realm.create(TODO_SCHEMA, todo)
         });
@@ -23,6 +23,11 @@ const addTodo = (todo) => {
     }
  
     console.log(getAllTodos());
+}
+
+const searchTodo = (str) => {
+    const todo = realm.objects(TODO_SCHEMA).filtered(`todo LIKE "*${str}*"`);
+    return todo;
 }
 
 const deleteTodo = (_id, content) =>{
@@ -51,6 +56,7 @@ const getAllTodos = () => {
 export {
     TODO_SCHEMA,
     addTodo,
+    searchTodo,
     deleteTodo,
     clearAll,
     getAllTodos,
